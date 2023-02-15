@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
 
 class UserProfile extends StatelessWidget{
-  const UserProfile({super.key});
+  List<MenuRowData> menuRow =[
+    MenuRowData(Icons.favorite, 'Избранное'),
+    MenuRowData(Icons.call, 'Недавние звонки'),
+    MenuRowData(Icons.computer, 'Устройства'),
+    MenuRowData(Icons.folder, 'Папки с чатами'),
+  ];
+  UserProfile();
 
   @override
   Widget build(BuildContext context){
@@ -16,14 +22,56 @@ class UserProfile extends StatelessWidget{
           crossAxisAlignment: CrossAxisAlignment.center,
           // ignore: prefer_const_literals_to_create_immutables
           children: [
-            const _UserInfo(),
+            _UserInfo(),
+            SizedBox(height: 30),
+            _MenuWidget(menuRow: menuRow)
           ],
         ),
       ),
     );
   }
 }
+class MenuRowData{
+  final IconData icon;
+  final String text;
 
+  MenuRowData(this.icon, this.text);
+}
+class _MenuWidget extends StatelessWidget{
+  final List<MenuRowData> menuRow;
+  const _MenuWidget({super.key, required this.menuRow});
+
+  @override 
+  Widget build(BuildContext context){
+    return Container(
+      color: Colors.white,
+      width: double.infinity,
+      child: Column(
+        children: menuRow.map((data) => _MenuWidgetRow(data: data)).toList()
+      ),
+    );
+  }
+}
+
+class _MenuWidgetRow extends StatelessWidget{
+  final MenuRowData data;
+  _MenuWidgetRow({super.key, required this.data});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+            padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+            child: Row(
+              children: [
+                Icon(data.icon),
+                SizedBox(width: 15),
+                Expanded(child: Text(data.text)),
+                Icon(Icons.chevron_right)
+              ],
+            ),
+          );
+  }
+}
 class _UserInfo extends StatelessWidget {
   const _UserInfo({super.key});
 
